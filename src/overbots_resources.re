@@ -36,7 +36,10 @@ let displayed_resources = [
   (
     "Raw",
     "raw",
-    [(IronOxide, "Iron Oxide", "ironoxide"), (RawSilicon, "Raw Silicon", "rawsilicon")]
+    [
+      (IronOxide, "Iron Oxide", "ironoxide"),
+      (RawSilicon, "Raw Silicon", "rawsilicon")
+    ]
   )
 ];
 
@@ -48,3 +51,31 @@ type resource_value_state =
   | ValueTooLow
   | ValueTooHigh (model, resource_value)
   | ValueSuccess model;
+
+let set_resource_value rid value model => {
+  module R = (val get_resource_module rid);
+  let (rmin, rmax) = R.get_value_range model;
+  if (value < rmin) {
+    ValueTooLow
+  } else if (value > rmax) {
+    let resource_values = ResourceMap.add rid rmax model.resource_values;
+    /*
+       extends model with some member
+       in OCaml: `{model with resource_values}`
+     */
+    ValueTooHigh ({...model, resource_values}, value -. rmax)
+  } else {
+    let resource_values = ResourceMap.add rid value model.resource_values;
+    ValueSuccess {...model, resource_values}
+  }
+};
+
+let add_resource_value rid delta model => {
+  let value = delta +. get_resource_value rid model;
+  set_resource_value rid value model
+};
+
+let init_resources_values () => {
+  let resource_folder rid _r acc => ResourceMap.add rid 0.0 acc;
+  ResourceMap.fold resource_folder all_resources ResourceMap.empty
+};

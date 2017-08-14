@@ -32,7 +32,7 @@ module BoolFlagSet =
 
 type bool_flags = BoolFlagSet.t;
 
-let init_bool_flags = BoolFlagSet.empty;
+let init_bool_flags () => BoolFlagSet.empty;
 
 type int_flag =
   | NoIntFlagsYet;

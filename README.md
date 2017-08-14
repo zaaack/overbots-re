@@ -1,15 +1,16 @@
-# bs-loader example
+# overbots-re
 
-This is an example use case for `bs-loader`
+A Reason version for Overminddl1's great tutorial game [overbots](https://github.com/OvermindDL1/overbots).
 
-* [__`package.json`__](https://github.com/rrdelaney/bs-loader/blob/master/example/package.json)
-* [__Webpack Config__](https://github.com/rrdelaney/bs-loader/blob/master/example/webpack.config.js)
-* [__Bucklescript Config__](https://github.com/rrdelaney/bs-loader/blob/master/example/bsconfig.json)
+Follow the posts at:  <http://blog.overminddl1.com/tags/overbots/>
 
-## Building the example
+### Installation
 
+```sh
+git clone https://github.com/zaaack/overbots-re.git
+cd overbots-re
+# npm i -g bs-platform # make sure bs-platform is global installed, this project will using global installed bs-platform
+npm install
+npm start # webpack + bs-loader!
 ```
-npm run build
-```
-
-You'll be able to see the Bucklescript output in `lib/` and the Webpack output in `build/`
+Then open up `http://127.0.0.1:8080` as an example.

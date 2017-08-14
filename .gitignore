@@ -2,3 +2,5 @@ lib/
 node_modules/
 build/
 .merlin
+yarn-error.log
+npm-error.log
