@@ -1,0 +1,27 @@
+{
+  "name": "reason-webpack",
+  "private": true,
+  "version": "1.1.0",
+  "description": "",
+  "scripts": {
+    "start": "webpack-dev-server --progress",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bs-loader": "^1.5.2",
+    "bs-platform": "^1.8.0",
+    "bucklescript-tea": "^0.6.6",
+    "jest": "^20.0.4",
+    "node-sass": "^4.5.3",
+    "reason-react": "^0.2.1",
+    "sass-loader": "^6.0.6",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.0"
+  },
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  }
+}

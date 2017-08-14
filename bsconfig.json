@@ -1,0 +1,8 @@
+{
+  "name": "overbots-re",
+  "sources": ["src"],
+  "bs-dependencies": ["reason-react", "bucklescript-tea"],
+  "reason": {
+    "react-jsx": 2
+  }
+}
