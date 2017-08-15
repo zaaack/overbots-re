@@ -44,9 +44,25 @@
   }
 
   .container-actions {
-    flex: 0 0 256px;
-    order: 2;
+  flex: 0 0 256px;
+  order: 2;
+
+  .action-category {
+    display: flex;
+    flex-direction: column;
   }
+
+  .category-title {
+    border-bottom: solid 1px #000;
+    flex: 0;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .action-button {
+    flex: 1;
+  }
+}
 
   .container-scanner {
     flex: 1 0 256px;

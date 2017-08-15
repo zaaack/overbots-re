@@ -8,10 +8,7 @@ let view_container enabled id title children =>
   } else {
     div
       [class' ("container container-" ^ id)]
-      [
-        div [class' "title"] [text title],
-        div [class' ("scroller " ^ id)] children
-      ]
+      [div [class' "title"] [text title], div [class' ("scroller " ^ id)] children]
   };
 
 let format_value value =>
@@ -33,17 +30,13 @@ let view_resources_category_resource model (rid, name, id) => {
     [
       div
         [class' ("resources resource-" ^ id)]
-        [
-          div [class' "resource-name"] [text name],
-          div [class' "resource-value"] [text value]
-        ]
+        [div [class' "resource-name"] [text name], div [class' "resource-value"] [text value]]
     ]
   }
 };
 
 let view_resources_categories model (name, id, resources) => {
-  let children =
-    List.map (view_resources_category_resource model) resources |> List.flatten;
+  let children = List.map (view_resources_category_resource model) resources |> List.flatten;
   if (children === []) {
     []
   } else {
@@ -58,10 +51,37 @@ let view_resources_categories model (name, id, resources) => {
 };
 
 let view_resources model =>
-  List.map
-    (view_resources_categories model) Overbots_resources.displayed_resources |> List.flatten;
+  List.map (view_resources_categories model) Overbots_resources.displayed_resources |> List.flatten;
 
-let view_buttons model => [];
+let view_button model (bid, id, name) =>
+  Overbots_buttons.(
+    if (button_enabled model bid) {
+      [
+        button
+          [
+            onClick (ActionButtonClicked bid),
+            Attributes.disabled (button_temporarily_disabled model bid),
+            class' ("action-button action-button-" ^ id)
+          ]
+          [text name]
+      ]
+    } else {
+      []
+    }
+  );
+
+let view_buttons_category model (name, id, buttons) => {
+  let children = List.map (view_button model) buttons |> List.flatten;
+  if (children === []) {
+    []
+  } else {
+    let children = [div [class' "category-title"] [text name], ...children];
+    [div [class' ("button-category button-category-" ^ id)] children]
+  }
+};
+
+let view_buttons model =>
+  List.map (view_buttons_category model) Overbots_buttons.displayed_buttons |> List.flatten;
 
 let view_scanner model => [];
 

@@ -1,5 +1,7 @@
 open Overbots_types;
 
+open Overbots_flags;
+
 module type Resource = {
   let id: resource_flag;
   let shown: model => bool;
@@ -8,19 +10,19 @@ module type Resource = {
 
 module Energy: Resource = {
   let id = Energy;
-  let shown _model => true;
+  let shown model => bool_flag_exists InternalPowerEnabled model;
   let get_value_range _model => (0.0, 100.0);
 };
 
 module IronOxide: Resource = {
   let id = IronOxide;
-  let shown _model => true;
+  let shown model => bool_flag_exists DrillDeployed model;
   let get_value_range _model => (0.0, 100.0);
 };
 
 module RawSilicon: Resource = {
   let id = RawSilicon;
-  let shown _model => true;
+  let shown model => bool_flag_exists DrillDeployed model;
   let get_value_range _model => (0.0, 100.0);
 };
 
@@ -36,10 +38,7 @@ let displayed_resources = [
   (
     "Raw",
     "raw",
-    [
-      (IronOxide, "Iron Oxide", "ironoxide"),
-      (RawSilicon, "Raw Silicon", "rawsilicon")
-    ]
+    [(IronOxide, "Iron Oxide", "ironoxide"), (RawSilicon, "Raw Silicon", "rawsilicon")]
   )
 ];
 
@@ -73,6 +72,22 @@ let set_resource_value rid value model => {
 let add_resource_value rid delta model => {
   let value = delta +. get_resource_value rid model;
   set_resource_value rid value model
+};
+
+let cost_resource rid delta model =>
+  switch (add_resource_value rid (-. delta) model) {
+  | ValueTooLow => None
+  | ValueTooHigh _ => None
+  | ValueSuccess model => Some model
+  };
+
+let cost_resources resources model => {
+  let aux model (rid, amt) =>
+    switch model {
+    | None => None
+    | Some model => cost_resource rid amt model
+    };
+  List.fold_left aux (Some model) resources
 };
 
 let init_resources_values () => {
